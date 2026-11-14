@@ -20,7 +20,14 @@
 // in-memory store is not enough when several instances run behind a load balancer.
 //
 // Hint: express-rate-limit returns a middleware function — export it directly:
-//   const rateLimit = require('express-rate-limit');
+ const rateLimit = require('express-rate-limit');
 //   module.exports = rateLimit({ ...options });
 
-module.exports = (req, res, next) => next(); // TODO: replace this stub
+
+module.exports = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5,                   // 5 attempts per IP per window
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: true
+});
